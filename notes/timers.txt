@@ -1,5 +1,4 @@
 
-
 Each timer (1-4) has 4 capture/compare channels (1-4). These are directly used
 by PWM but have a ton of other possible functionality. The STM32 implementation
 is particularly complicated with, eg, the ability to chain together timers
@@ -12,6 +11,12 @@ as well that we will ignore for now.
 Timer2,Ch 3+4 are D0 and D1, which conflict with Serial2. USART should work
 fine as long as pins aren't in output mode? and timers should work fine if
 Serial2 isn't in use?
+
+Misc Notes
+------------------------------------------------------------------------------
+implementation with case/switch in the interrupt handlers doesn't work; a lot
+of the time multiple interrupt flags are active at the same time (or become
+active?)
 
 TODO
 ------------------------------------------------------------------------------

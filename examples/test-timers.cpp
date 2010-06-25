@@ -128,7 +128,6 @@ void setup_test_timer(void) {
     timer_set_mode(timer,3,TIMER_OUTPUTCOMPARE);
     timer_set_mode(timer,4,TIMER_OUTPUTCOMPARE);
     val1 = val2 = val3 = val4 = 10000;
-    count1 = count2 = count3 = count4 = 0;
     timer_set_compare_value(timer,1,val1);
     timer_set_compare_value(timer,2,val2);
     timer_set_compare_value(timer,3,val3);
@@ -137,6 +136,7 @@ void setup_test_timer(void) {
     timer_attach_interrupt(timer,2,handler2);
     timer_attach_interrupt(timer,3,handler3);
     timer_attach_interrupt(timer,4,handler4);
+    count1 = count2 = count3 = count4 = 0;
 }
 
 void handler1(void) {
