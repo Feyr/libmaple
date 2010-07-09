@@ -77,9 +77,9 @@ void setup()
     timer_set_mode(4, 3, TIMER_OUTPUTCOMPARE);
     timer_set_mode(4, 4, TIMER_OUTPUTCOMPARE);
     timer_set_reload(4, 2287);
-    timer_set_compare_value(4,1,271);
-    timer_set_compare_value(4,2,407);
-    timer_set_compare_value(4,3,1219);  // 2219 max...
+    timer_set_compare_value(4,1,200);
+    timer_set_compare_value(4,2,300);
+    timer_set_compare_value(4,3,2170);  // 2219 max...
     timer_set_compare_value(4,4,1);
     timer_attach_interrupt(4,1,isr_porch);
     timer_attach_interrupt(4,2,isr_start);
@@ -111,16 +111,47 @@ void isr_porch(void) {
         VGA_V_LOW;
         return;
     }
-    if(y>=179) {    // 479
+    if(y>=479) {    // 479
         v_active = 0;
         return;
     }
 }
+
+uint8 logo[18][16] = {
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+    {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,},
+    {0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,},
+    {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,},
+    {0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,},
+    {0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,},
+    {0,0,1,0,0,1,0,1,0,1,0,0,1,0,0,0,},
+    {0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,},
+    {0,1,0,1,0,0,0,1,0,0,0,1,0,1,0,0,},
+    {1,0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,},
+    {1,0,0,0,0,1,0,1,0,1,0,0,0,0,1,0,},
+    {1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,0,},
+    {0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,},
+    {0,0,1,1,0,0,0,1,0,0,0,1,1,0,0,0,},
+    {0,0,0,0,1,1,1,0,1,1,1,0,0,0,0,0,},
+    {0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,},
+    {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,}, };
+
 void isr_start(void) {
     if(!v_active) { return; }
     VGA_R_HIGH;
-    VGA_G_HIGH;
-    VGA_B_HIGH;
+    //delayMicroseconds(2);
+    //gpio_write_bit(GPIOA_BASE, 8, 1); // VGA_G
+    for(x=0; x<32; x++) {
+        if(logo[y/28][x/2]) {
+            VGA_G_HIGH;
+            VGA_B_HIGH;
+        } else {
+            VGA_G_LOW;
+            VGA_B_LOW;
+        }
+    }
+
 }
 void isr_stop(void) {
     if(!v_active) { return; }
