@@ -30,3 +30,8 @@ crude 640x480 directions:
     11 lines front porch
     2 lines Vsync (low)
     31 lines back porch
+
+Currently, setting vs. unsetting GPIO registers seems to take a different
+amount of time? Or perhaps i'm not analyzing branching correctly. Regardless,
+if you SET 100x times then UNSET on one line, then UNSET 100x then SET the next
+line, the two changes in color will generally not line up. 

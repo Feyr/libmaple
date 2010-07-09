@@ -26,40 +26,45 @@ TODO
 - Wirish (C++) higher level implementation
 - implement the update interrupt as a "5th channel"
 - track down and handle all pin conflicts
-- document
+- document carefully (eg, determine clock-wise and overflow-wise behavior for
+  each function)
+- "pulse in" stuff, both c and c++
 
 Possible Wirish implementation
 ------------------------------------------------------------------------------
-This recent implementation seems pretty clean:
+Inspired by Timer1 Library for arduino
 http://arduino.cc/pipermail/developers_arduino.cc/2010-June/002845.html
 
-        class Timer1Class {
+        class HardwareTimer {
+
         public:
-            static void (*isrCompareA)(void);
-            static void (*isrCompareB)(void);
 
-            static const uint8_t PRESCALE1 = 1;
-            static const uint8_t PRESCALE8 = 2;
-            static const uint8_t PRESCALE64 = 3;
-            static const uint8_t PRESCALE256 = 4;
-            static const uint8_t PRESCALE1024 = 5;
-
-            const static uint8_t NORMAL = 0;
-            const static uint8_t CTC = 4;
-
-            void setPrescaleFactor(uint8_t factor);
-            void setMode(uint8_t mode);
-            uint16_t read();
-            void write(uint16_t val);
-            void writeCompareA(uint16_t val);
-            void writeCompareB(uint16_t val);
-            void attachCompareAInterrupt(void (*f)(void));
-            void attachCompareBInterrupt(void (*f)(void));
-            void detachCompareAInterrupt();
-            void detachCompareBInterrupt();
+            void start();
+            void stop();
+            void setPrescaleFactor(uint8 factor);
+            void setOverflow(uint16 val); // truncates to overflow
+            void setCount(uint16 val);    // truncates to overflow
+            uint16 getCount();
+            uint16 setPeriod(uint32 microseconds); // tries to set prescaler and overflow wisely; returns overflow
+            void setMode(uint8 mode);
+            void setCompare1(uint16 val); // truncates to overflow
+            void setCompare2(uint16 val); // truncates to overflow
+            void setCompare3(uint16 val); // truncates to overflow
+            void setCompare4(uint16 val); // truncates to overflow
+            void attachCompare1Interrupt(void (*f)(void));
+            void attachCompare2Interrupt(void (*f)(void));
+            void attachCompare3Interrupt(void (*f)(void));
+            void attachCompare4Interrupt(void (*f)(void));
+            void detachCompare1Interrupt();
+            void detachCompare2Interrupt();
+            void detachCompare3Interrupt();
+            void detachCompare4Interrupt();
         };
 
-        extern Timer1Class Timer1;
+        HardwareTimer Timer1 = HardwareTimer(1);
+        HardwareTimer Timer2 = HardwareTimer(2);
+        HardwareTimer Timer3 = HardwareTimer(3);
+        HardwareTimer Timer4 = HardwareTimer(4);
 
 Here's one of the more standard libaries out there:
 http://www.arduino.cc/playground/Code/Timer1
