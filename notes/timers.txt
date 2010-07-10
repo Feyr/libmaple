@@ -20,15 +20,15 @@ active?)
 
 TODO
 ------------------------------------------------------------------------------
+- document carefully (eg, determine clock-wise and overflow-wise behavior for
+  each function)
+- Wirish (C++) higher level implementation
+- track down and handle all pin conflicts
+- implement the update interrupt as a "5th channel"
+- "pulse in" stuff, both c and c++
 - function to read out CCR registers
 - allow comparison output to the pin (a la PWM)
 - additional modes and configuration (up, down, up/down, etc)
-- Wirish (C++) higher level implementation
-- implement the update interrupt as a "5th channel"
-- track down and handle all pin conflicts
-- document carefully (eg, determine clock-wise and overflow-wise behavior for
-  each function)
-- "pulse in" stuff, both c and c++
 
 Possible Wirish implementation
 ------------------------------------------------------------------------------
